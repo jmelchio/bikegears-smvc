@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="authenticationInterceptor"/>
+                <ref bean="localeChangeInterceptor"/>
+                <ref bean="themeChangeInterceptor"/>
+                <ref bean="menuInterceptor"/>
+            </list>
+        </property>
+        <property name="mappings">
+            <props>
+                <prop key="/welcome.html">welcomeController</prop>
+                <prop key="/rideroverview.html">riderOverviewController</prop>
+                <prop key="/bikeentry.html">bikeEntryController</prop>
+                <prop key="/bikeoverview.html">bikeOverviewController</prop>
+                <prop key="/biketypeentry.html">bikeTypeEntryController</prop>
+                <prop key="/login.html">loginController</prop>
+                <prop key="/logout.html">logoutController</prop>
+                <prop key="/rideentry.html">rideEntryController</prop>
+                <prop key="/riderentry.html">riderEntryController</prop>
+                <prop key="/ridetypeentry.html">rideTypeEntryController</prop>
+                <prop key="/pagenotfound.html">pageNotFoundController</prop>
+                <!-- <prop key="/bikedelete.html">bikeDeleteController</prop> -->
+                <prop key="/ridedelete.html">rideDeleteController</prop>
+                <!-- <prop key="/riderdelete.html">riderDeleteController</prop>
+                <prop key="/biketypedelete.html">bikeTypeDeleteController</prop>
+                <prop key="/ridetypedelete.html">rideTypeDeleteController</prop> -->
+                <prop key="/pie.html">ceWolfController</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass">
+            <value>org.springframework.web.servlet.view.JstlView</value>
+        </property>
+        <property name="prefix">
+            <value>/WEB-INF/pages/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+    
+    <bean id="localeChangeInterceptor" 
+          class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"> 
+        <property name="paramName" value="siteLanguage"/> 
+    </bean>
+    
+    <bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
+        <property name="paramName" value="siteTheme"/>
+    </bean>
+    
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+          
+    <bean id="themeResolver" class="org.springframework.web.servlet.theme.CookieThemeResolver">
+        <property name="defaultThemeName" value="lemond"/>
+    </bean>
+    
+    <bean id="exceptionInterceptor" class="com.nob.bg.web.resolver.BGHandlerExceptionResolver">
+        <property name="databaseProblemView" value="dberrorpage"/>
+        <property name="unknownProblemView" value="unknownerrorpage"/>
+    </bean>
+    
+    <bean id="menuInterceptor" class="com.nob.bg.web.interceptors.MenuHandlerInterceptor">
+        <property name="menu">
+            <list>
+                <bean id="rideroverview" class="com.nob.bg.web.util.MenuItem">
+                    <property name="action" value="rideroverview.html"/>
+                    <property name="linkText" value="menu.rideroverview"/>
+                </bean>
+                <bean id="bikeroverview" class="com.nob.bg.web.util.MenuItem">
+                    <property name="action" value="bikeoverview.html"/>
+                    <property name="linkText" value="menu.bikeoverview"/>
+                </bean>
+                <bean id="rideentry" class="com.nob.bg.web.util.MenuItem">
+                    <property name="action" value="rideentry.html"/>
+                    <property name="linkText" value="menu.rideentry"/>
+                </bean>
+                <bean id="bikeentry" class="com.nob.bg.web.util.MenuItem">
+                    <property name="action" value="bikeentry.html"/>
+                    <property name="linkText" value="menu.bikeentry"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="authenticationInterceptor" class="com.nob.bg.web.interceptors.AuthenticationCheckHandlerInterceptor">
+        <property name="excludedHandlers">
+            <list>
+                <ref bean="welcomeController"/>
+                <ref bean="loginController"/>
+                <ref bean="pageNotFoundController"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="dateEditor" class="com.nob.bg.web.controllers.propeditors.DatePropertyEditor"/>
+    
+    <bean id="welcomeController" class="com.nob.bg.web.controllers.WelcomeController">
+        <property name="viewName" value="welcome"/>
+    </bean>
+    
+    <bean id="riderOverviewController" class="com.nob.bg.web.controllers.RiderOverviewController">
+        <property name="service" ref="service"/>
+    </bean>
+    
+    <bean id="bikeEntryController" class="com.nob.bg.web.controllers.BikeEntryController">
+        <property name="service" ref="service"/>
+        <property name="formView" value="bikeentry"/>
+        <property name="commandName" value="bike"/>
+        <property name="commandClass" value="com.nob.bg.model.Bike"/>
+        <property name="successView" value="redirect:bikeoverview.html"/>
+    </bean>
+    
+    <bean id="bikeOverviewController" class="com.nob.bg.web.controllers.BikeOverviewController">
+        <property name="service" ref="service"/>
+        <property name="viewName" value="bikeoverview"/>
+    </bean>
+    
+    <bean id="bikeTypeEntryController" class="com.nob.bg.web.controllers.BikeTypeEntryController">
+        <property name="service" ref="service"/>
+        <property name="formView" value="biketypeentry"/>
+        <property name="commandName" value="biketype"/>
+        <property name="commandClass" value="com.nob.bg.model.BikeType"/>
+        <property name="successView" value="redirect:bikeoverview.html"/>
+    </bean>
+    
+    <bean id="loginController" class="com.nob.bg.web.controllers.LoginController">
+        <property name="service" ref="service" />
+        <property name="formView" value="login" />
+        <property name="commandName" value="credentials" />
+        <property name="commandClass" value="com.nob.bg.model.dto.LoginDTO" />
+        <property name="successView" value="redirect:welcome.html" />
+    </bean>
+    
+    <bean id="logoutController" class="com.nob.bg.web.controllers.LogoutController">
+        <property name="viewName" value="welcome"/>
+    </bean>
+    
+    <bean id="rideEntryController" class="com.nob.bg.web.controllers.RideEntryController">
+        <property name="service" ref="service"/>
+        <property name="dateEditor" ref="dateEditor"/>
+        <property name="formView" value="rideentry"/>
+        <property name="commandName" value="bikeRide"/>
+        <property name="commandClass" value="com.nob.bg.model.BikeRide"/>
+        <property name="successView" value="redirect:rideroverview.html" />
+    </bean>
+    
+    <bean id="riderEntryController" class="com.nob.bg.web.controllers.RiderEntryController">
+        <property name="service" ref="service"/>
+        <property name="formView" value="riderentry"/>
+        <property name="commandName" value="rider"/>
+        <property name="commandClass" value="com.nob.bg.model.BikeRider"/>
+        <property name="successView" value="redirect:rideroverview.html"/>
+    </bean>
+    
+    <bean id="rideTypeEntryController" class="com.nob.bg.web.controllers.RideTypeEntryController">
+        <property name="service" ref="service"/>
+        <property name="formView" value="ridetypeentry"/>
+        <property name="commandName" value="ridetype"/>
+        <property name="commandClass" value="com.nob.bg.model.BikeRideType"/>
+        <property name="successView" value="redirect:rideroverview.html"/>
+    </bean>
+    
+    <bean id="rideDeleteController" class="com.nob.bg.web.controllers.RideDeleteController">
+        <property name="service" ref="service"/>
+        <property name="dateEditor" ref="dateEditor"/>
+        <property name="formView" value="ridedelete"/>
+        <property name="commandName" value="bikeRide"/>
+        <property name="commandClass" value="com.nob.bg.model.BikeRide"/>
+        <property name="successView" value="redirect:rideroverview.html"/>
+    </bean>
+    
+    <bean id="pageNotFoundController" class="com.nob.bg.web.controllers.PageNotFoundController">
+        <property name="viewName" value="pagenotfound"/>
+    </bean>
+    
+    <bean id="ceWolfController" class="com.nob.bg.web.controllers.CeWolfTestController"/>
+</beans>

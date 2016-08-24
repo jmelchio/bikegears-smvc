@@ -1,0 +1,13 @@
+<%@ include file="/WEB-INF/pages/fragments/taglibs.jspf" %>
+<div id="menu">
+    <c:forEach var="menuItem" items="${menu}">
+        <c:choose>
+            <c:when test="${!menuItem.active}">
+                <a href="${menuItem.action}"><spring:message code="${menuItem.linkText}"/></a>
+            </c:when>
+            <c:otherwise>
+                <p><spring:message code="${menuItem.linkText}"/></p>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+</div>

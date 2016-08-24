@@ -1,0 +1,3 @@
+<%@ include file="/WEB-INF/pages/fragments/taglibs.jspf" %>
+
+<link rel="stylesheet" href="<spring:theme code="styleSheet"/>" type="text/css" media="screen"/>

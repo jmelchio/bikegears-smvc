@@ -1,0 +1,14 @@
+<%@ include file="/WEB-INF/pages/fragments/taglibs.jspf" %>
+<div id="header">
+    <p><a href="/bikelog-smvc/"><img src="/bikelog-smvc/images/bike-gears-title.png" alt="<spring:message code="header.text"/>"/></a></p>
+    <p>
+        <c:choose>
+            <c:when test="${!empty sessionScope.bgSession}">
+                <a href="logout.html"><spring:message code="application.logout"/></a> ${sessionScope.bgSession.bikeRider.userName}
+            </c:when>
+            <c:otherwise>
+                <a href="login.html"><spring:message code="application.login"/></a>
+            </c:otherwise>
+        </c:choose>
+    </p>    
+</div>

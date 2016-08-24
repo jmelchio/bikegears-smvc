@@ -1,0 +1,10 @@
+<%@ include file="/WEB-INF/pages/fragments/taglibs.jspf" %>
+<fmt:message key="format.integer"					var="ptnInteger"/>
+<fmt:message key="format.number"					var="ptnNumber"/>
+<fmt:message key="format.number.precise"			var="ptnNumberExt"/>
+<fmt:message key="format.number.monetary"			var="ptnMoney"/>
+<fmt:message key="format.number.monetary.precise"	var="ptnMoneyExt"/>
+<fmt:message key="format.number.percentage"			var="ptnPercent"/> 
+<fmt:message key="format.number.percentage.precise"	var="ptnPercentExt"/> 
+<fmt:message key="format.date"						var="ptnDate"/>
+<fmt:message key="format.year"						var="ptnYear"/>

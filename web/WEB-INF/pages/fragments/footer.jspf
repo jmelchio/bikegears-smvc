@@ -1,0 +1,4 @@
+<%@ include file="/WEB-INF/pages/fragments/taglibs.jspf" %>
+<div id="footer">
+    <p><spring:message code="footer.text"/></p>
+</div>
